@@ -43,21 +43,32 @@ module ActiveModel
     end
 
     def validation_hints_for(attribute)
+      result = Array.new
       @base.class.validators_on(attribute).map do |v|
+        puts "** ** ** ** V " + v.class.to_s.split('::').last.downcase.gsub('validator','')
+        # check for validators that have no options
         validator = v.class.to_s.split('::').last.downcase.gsub('validator','')
         if MESSAGES_FOR_VALIDATORS.include?(validator)
-          generate_keys(attribute, validator)
+          result << generate_keys(attribute, validator)
         end
-      end.flatten.compact
-                                #        key = v.class.to_s.underscore.gsub('/','.')
-                                #        puts "************#{v.inspect}"
-                                #        key = [v.qualifier, key].join('.') if v.respond_to?(:qualifier)
-                                #        [ key, v.options.except(*CALLBACKS_OPTIONS).keys.map do |o|
-                                #            key + "." + o.to_s
-                                #          end ].flatten
+        v.options.each do |o|
+        puts "** ** ** ** O " + o.inspect
+               if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
+                result << generate_keys(attribute, [ validator, o.first.to_s ].join('.'), { :count => o.last } )
+               end
+        end
+      end
+
+      #        key = v.class.to_s.underscore.gsub('/','.')
+      #        puts "************#{v.inspect}"
+      #        key = [v.qualifier, key].join('.') if v.respond_to?(:qualifier)
+      #        [ key, v.options.except(*CALLBACKS_OPTIONS).keys.map do |o|
+      #            key + "." + o.to_s
+      #          end ].flatten
+      result
     end
 
-    def generate_keys(attribute, type)
+    def generate_keys(attribute, type, options = {})
 
       if @base.class.respond_to?(:i18n_scope)
         defaults = @base.class.lookup_ancestors.map do |klass|
@@ -75,16 +86,16 @@ module ActiveModel
       defaults.compact!
       defaults.flatten!
 
-      #key = defaults.shift
+      key = defaults.shift
 
       options = {
         :default => defaults,
         :model => @base.class.model_name.human,
         :attribute => @base.class.human_attribute_name(attribute),
-      }
+      }.merge(options)
       puts "*" + File.basename(__FILE__) + ": " + "ATTR #{attribute}, OPTIONS #{options.inspect} "
       #I18n.translate(key, options)
-      [ defaults, options ]
+      [ key, options ]
     end
 
 
