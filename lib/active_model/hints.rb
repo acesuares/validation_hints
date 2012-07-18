@@ -3,25 +3,51 @@ module ActiveModel
   #
   # more documentation needed
 
-  class Errors
+  class Hints
     include Enumerable
 
-    def has_validations_for?(attribute)
-      ! self.class.validators_on(attribute).empty?
+    attr_reader :messages
+
+    # Pass in the instance of the object that is using the errors object.
+    #
+    #   class Person
+    #     def initialize
+    #       @errors = ActiveModel::Errors.new(self)
+    #     end
+    #   end
+    def initialize(base)
+      @base     = base
+      @messages = ActiveSupport::OrderedHash.new
     end
 
-    def has_validations?(object, attribute)
-      object.class.validators_on(attribute).empty? ? "" : 'has_validations '
+    def initialize_dup(other)
+      @messages = other.messages.dup
     end
 
-    def validation_help_as_list_for(object, attribute)
-      has_validations?(object, attribute) ? content_tag(:ul, validation_help_for(object, attribute).map { |m| content_tag(:li, m ) }.join.html_safe )  : ""
+# Backport dup from 1.9 so that #initialize_dup gets called
+    unless Object.respond_to?(:initialize_dup)
+      def dup # :nodoc:
+        copy = super
+        copy.initialize_dup(self)
+        copy
+      end
     end
 
-    # validation_help_for(object, attribute) extracts the help messages for
-    # attribute of object.class (in an Array)
-    def validation_help_for(object, attribute)
-      object.class.validators_on(attribute).map do |v|
+    # Clear the messages
+    def clear
+      messages.clear
+    end
+
+    def show
+      self
+    end
+
+    def t(a)
+      a
+    end
+    
+    def validation_help_for(attribute)
+      @base.class.validators_on(attribute).map do |v|
         key = v.class.to_s.underscore
         regex = /\//
         main_key = key.match(regex) ? key.gsub('/','.') : "inline_forms.validations." + key

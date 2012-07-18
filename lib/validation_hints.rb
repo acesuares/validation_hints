@@ -1,13 +1,14 @@
 # -*- encoding : utf-8 -*-
 
-require 'active_support'
 require 'validation_hints/version'
+require 'active_model/hints'
 
 module ActiveModel
-  extend ActiveSupport::Autoload
-
-  autoload :Hints
-
+  module Validations
+    def hints
+      @hints ||= Hints.new(self)
+    end
+  end
 end
 
 require 'active_support/i18n'
