@@ -4,11 +4,23 @@ require 'validation_hints/version'
 require 'active_model/hints'
 
 module ActiveModel
+
   module Validations
+
+    def has_validations?
+      ! self.class.validators.empty?
+    end
+
     def hints
       @hints ||= Hints.new(self)
     end
+
+    def hints_for(attribute)
+      hints.validation_hints_for(attribute)
+    end
+
   end
+
 end
 
 require 'active_support/i18n'
