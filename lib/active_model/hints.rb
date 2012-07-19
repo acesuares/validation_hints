@@ -1,6 +1,10 @@
 module ActiveModel
   # == Active Model Hints
   #
+  # p = Person.new
+  # p.hints
+  # p.hints[:name]
+  # 
   # more documentation needed
 
   class Hints
@@ -23,8 +27,25 @@ module ActiveModel
       @base     = base
       @messages = ActiveSupport::OrderedHash.new
       @base.attributes.keys.each do |a|
-        @messages[a.to_sym] = validation_hints_for(a.to_sym)
+        @messages[a.to_sym] = hints_for(a.to_sym)
       end
+    end
+
+    def hints_for(attribute)
+      result = Array.new
+      @base.class.validators_on(attribute).map do |v|
+        # check for validators that have no options
+        validator = v.class.to_s.split('::').last.downcase.gsub('validator','')
+        if MESSAGES_FOR_VALIDATORS.include?(validator)
+          result << generate_message(attribute, validator)
+        end
+        v.options.each do |o|
+          if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
+            result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => o.last } )
+          end
+        end
+      end
+      result
     end
 
     def initialize_dup(other)
@@ -242,25 +263,6 @@ module ActiveModel
         })
     end
 
-    def validation_hints_for(attribute)
-      result = Array.new
-      @base.class.validators_on(attribute).map do |v|
-        # puts "** ** ** ** V " + v.class.to_s.split('::').last.downcase.gsub('validator','')
-        # check for validators that have no options
-        validator = v.class.to_s.split('::').last.downcase.gsub('validator','')
-        if MESSAGES_FOR_VALIDATORS.include?(validator)
-          result << generate_message(attribute, validator)
-        end
-        v.options.each do |o|
-        # puts "** ** ** ** O " + o.inspect
-               if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
-                result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => o.last } )
-               end
-        end
-      end
-      result
-    end
-
     def generate_message(attribute, type, options = {})
       if @base.class.respond_to?(:i18n_scope)
         defaults = @base.class.lookup_ancestors.map do |klass|
@@ -285,7 +287,6 @@ module ActiveModel
         :model => @base.class.model_name.human,
         :attribute => @base.class.human_attribute_name(attribute),
       }.merge(options)
-      #      puts "*" + File.basename(__FILE__) + ": " + "ATTR #{attribute}, OPTIONS #{options.inspect} "
       I18n.translate(key, options)
     end
 
