@@ -49,12 +49,12 @@ module ActiveModel
         # check for validators that have no options
         validator = v.class.to_s.split('::').last.downcase.gsub('validator','')
         if MESSAGES_FOR_VALIDATORS.include?(validator)
-          result << generate_keys(attribute, validator)
+          result << generate_message(attribute, validator)
         end
         v.options.each do |o|
         puts "** ** ** ** O " + o.inspect
                if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
-                result << generate_keys(attribute, [ validator, o.first.to_s ].join('.'), { :count => o.last } )
+                result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => o.last } )
                end
         end
       end
@@ -68,7 +68,7 @@ module ActiveModel
       result
     end
 
-    def generate_keys(attribute, type, options = {})
+    def generate_message(attribute, type, options = {})
 
       if @base.class.respond_to?(:i18n_scope)
         defaults = @base.class.lookup_ancestors.map do |klass|
@@ -94,8 +94,8 @@ module ActiveModel
         :attribute => @base.class.human_attribute_name(attribute),
       }.merge(options)
       puts "*" + File.basename(__FILE__) + ": " + "ATTR #{attribute}, OPTIONS #{options.inspect} "
-      #I18n.translate(key, options)
-      [ key, options ]
+#      [ key, options ]
+      I18n.translate(key, options)
     end
 
 
