@@ -12,7 +12,7 @@ module ActiveModel
 
     CALLBACKS_OPTIONS = [:if, :unless, :on, :allow_nil, :allow_blank, :strict]
     MESSAGES_FOR_VALIDATORS = %w(confirmation acceptance presence uniqueness format associated numericality)
-    MESSAGES_FOR_OPTIONS = %w(within in is minimum maximum greater_than greater_than_or_equal_to equal_to less_than less_than_or_equal_to odd even)
+    MESSAGES_FOR_OPTIONS = %w(within in is minimum maximum greater_than greater_than_or_equal_to equal_to less_than less_than_or_equal_to odd even only_integer)
     OPTIONS_THAT_WE_DONT_USE_YET = {
       :acceptance => :acceptance
 
@@ -47,7 +47,11 @@ module ActiveModel
         # check for validators that have no options
         validator = v.class.to_s.split('::').last.downcase.gsub('validator','')
         if MESSAGES_FOR_VALIDATORS.include?(validator)
+          if validator == 'numericality'
+          result << generate_message(attribute, validator + ".must_be_a_number")
+          else
           result << generate_message(attribute, validator)
+          end
         end
         v.options.each do |o|
           if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
