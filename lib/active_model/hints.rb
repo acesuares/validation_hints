@@ -11,8 +11,18 @@ module ActiveModel
     include Enumerable
 
     CALLBACKS_OPTIONS = [:if, :unless, :on, :allow_nil, :allow_blank, :strict]
-    MESSAGES_FOR_VALIDATORS = %w(confirmation acceptance presence uniqueness format inclusion exclusion associated numericality)
+    MESSAGES_FOR_VALIDATORS = %w(confirmation acceptance presence uniqueness format associated numericality)
     MESSAGES_FOR_OPTIONS = %w(within in is minimum maximum greater_than greater_than_or_equal_to equal_to less_than less_than_or_equal_to odd even)
+    OPTIONS_THAT_WE_DONT_USE_YET = {
+      :acceptance => :acceptance
+
+    }
+    VALIDATORS_THAT_WE_DONT_KNOW_WHAT_TO_DO_WITH = %w(validates_associated)
+
+    # Should virtual element for
+    #  validates :email, :confirmation => true
+    #  validates :email_confirmation, :presence => true
+    # also have a hint?
 
     attr_reader :messages
 
@@ -41,7 +51,9 @@ module ActiveModel
         end
         v.options.each do |o|
           if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
-            result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => o.last } )
+            count = o.last
+            count = o.last.to_sentence if %w(inclusion exclusion).include?(validator)
+            result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => count } )
           end
         end
       end
