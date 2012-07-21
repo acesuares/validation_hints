@@ -66,6 +66,10 @@ module ActiveModel
       result
     end
 
+    def full_messages_for(attribute)
+      hints_for(attribute).map { |message| full_message(attribute, message) }
+    end
+
     def initialize_dup(other)
       @messages = other.messages.dup
     end

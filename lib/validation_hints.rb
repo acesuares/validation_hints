@@ -7,16 +7,28 @@ module ActiveModel
 
   module Validations
 
+    module ClassMethods
+
+      def has_validations?
+        ! self.validators.empty?
+      end
+
+      def has_validations_for?(attribute)
+        ! self.validators_on(attribute).empty?
+      end
+
+    end
+
     def has_validations?
-      ! self.class.validators.empty?
+      self.class.has_validations?
+    end
+
+    def has_validations_for?(attribute)
+      self.class.has_validations_for?(attribute)
     end
 
     def hints
       @hints ||= Hints.new(self)
-    end
-
-    def hints_for(attribute)
-      hints.validation_hints_for(attribute)
     end
 
   end
