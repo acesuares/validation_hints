@@ -24,6 +24,7 @@ en:
         maximum: "must not be longer than %{count} characters"
         minimum: "must not be shorter than %{count} characters"
         is: "must be exactly %{count} characters"
+        radiolaria: "must be between %{minimum} and %{maximum} characters"
       numericality:
         must_be_a_number: "must be a number"
         only_integer: "must be an integer"

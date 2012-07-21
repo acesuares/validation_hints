@@ -46,18 +46,19 @@ module ActiveModel
       @base.class.validators_on(attribute).map do |v|
         # check for validators that have no options
         validator = v.class.to_s.split('::').last.downcase.gsub('validator','')
-        if MESSAGES_FOR_VALIDATORS.include?(validator)
-          if validator == 'numericality'
-          result << generate_message(attribute, validator + ".must_be_a_number")
-          else
-          result << generate_message(attribute, validator)
-          end
-        end
-        v.options.each do |o|
-          if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
-            count = o.last
-            count = o.last.to_sentence if %w(inclusion exclusion).include?(validator)
-            result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => count } )
+        message_key =  validator
+        message_key =  [validator, ".must_be_a_number"].join('.') if validator == 'numericality' # create an option for numericality; the way YAML works a key (numericality) with subkeys (greater_than, etc etc) can not have a string itself. So we create a subkey for numericality
+        message_key =  [validator, v.options[:message]].join('.') if v.options[:message].is_a?(Symbol) # if a message was supplied as a symbol, we use it instead
+        if v.options[:message].is_a?(Symbol)
+          result << generate_message(attribute, message_key, v.options)
+        else
+          result << generate_message(attribute, message_key, v.options) if MESSAGES_FOR_VALIDATORS.include?(validator)
+          v.options.each do |o|
+            if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
+              count = o.last
+              count = o.last.to_sentence if %w(inclusion exclusion).include?(validator)
+              result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => count } )
+            end
           end
         end
       end
@@ -280,6 +281,7 @@ module ActiveModel
     end
 
     def generate_message(attribute, type, options = {})
+      #options.delete(:message) if options[:message].is_a?(Symbol)
       if @base.class.respond_to?(:i18n_scope)
         defaults = @base.class.lookup_ancestors.map do |klass|
           [ :"#{@base.class.i18n_scope}.hints.models.#{klass.model_name.i18n_key}.attributes.#{attribute}.#{type}",
@@ -289,6 +291,7 @@ module ActiveModel
         defaults = []
       end
 
+      defaults << options[:message] # defaults << options.delete(:message)
       defaults << :"#{@base.class.i18n_scope}.hints.messages.#{type}" if @base.class.respond_to?(:i18n_scope)
       defaults << :"hints.attributes.#{attribute}.#{type}"
       defaults << :"hints.messages.#{type}"
