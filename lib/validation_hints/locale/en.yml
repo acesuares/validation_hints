@@ -10,6 +10,7 @@ en:
     # The values :model, :attribute and :value are always available for interpolation
     # The value :count is available when applicable. Can be used for pluralization.
     messages:
+      is_a_curacao_id_number: 'hello world!'
       inclusion:
         in: "must be one of %{count}"
       exclusion:

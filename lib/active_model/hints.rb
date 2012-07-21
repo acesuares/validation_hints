@@ -12,6 +12,8 @@ module ActiveModel
 
     CALLBACKS_OPTIONS = [:if, :unless, :on, :allow_nil, :allow_blank, :strict]
     MESSAGES_FOR_VALIDATORS = %w(confirmation acceptance presence uniqueness format associated numericality)
+    VALIDATORS_WITHOUT_MAIN_KEYS = %w(exclusion format inclusion length numericality)
+    # and these? validates_with validates_each
     MESSAGES_FOR_OPTIONS = %w(within in is minimum maximum greater_than greater_than_or_equal_to equal_to less_than less_than_or_equal_to odd even only_integer)
     OPTIONS_THAT_WE_DONT_USE_YET = {
       :acceptance => :acceptance
@@ -44,15 +46,14 @@ module ActiveModel
     def hints_for(attribute)
       result = Array.new
       @base.class.validators_on(attribute).map do |v|
-        # check for validators that have no options
-        validator = v.class.to_s.split('::').last.downcase.gsub('validator','')
-        message_key =  validator
-        message_key =  [validator, ".must_be_a_number"].join('.') if validator == 'numericality' # create an option for numericality; the way YAML works a key (numericality) with subkeys (greater_than, etc etc) can not have a string itself. So we create a subkey for numericality
-        message_key =  [validator, v.options[:message]].join('.') if v.options[:message].is_a?(Symbol) # if a message was supplied as a symbol, we use it instead
+        validator = v.class.to_s.split('::').last.underscore.gsub('_validator','')
         if v.options[:message].is_a?(Symbol)
+          message_key =  [validator, v.options[:message]].join('.') # if a message was supplied as a symbol, we use it instead
           result << generate_message(attribute, message_key, v.options)
         else
-          result << generate_message(attribute, message_key, v.options) if MESSAGES_FOR_VALIDATORS.include?(validator)
+          message_key =  validator
+          message_key =  [validator, ".must_be_a_number"].join('.') if validator == 'numericality' # create an option for numericality; the way YAML works a key (numericality) with subkeys (greater_than, etc etc) can not have a string itself. So we create a subkey for numericality
+          result << generate_message(attribute, message_key, v.options) unless VALIDATORS_WITHOUT_MAIN_KEYS.include?(validator)
           v.options.each do |o|
             if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
               count = o.last
