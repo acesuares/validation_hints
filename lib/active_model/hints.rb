@@ -57,7 +57,7 @@ module ActiveModel
           v.options.each do |o|
             if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
               count = o.last
-              count = o.last.to_sentence if %w(inclusion exclusion).include?(validator)
+              count = (o.last.to_sentence if %w(inclusion exclusion).include?(validator)) rescue o.last
               result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => count } )
             end
           end
