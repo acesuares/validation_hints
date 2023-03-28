@@ -278,11 +278,11 @@ module ActiveModel
       return message if attribute == :base
       attr_name = attribute.to_s.gsub('.', '_').humanize
       attr_name = @base.class.human_attribute_name(attribute, :default => attr_name)
-      I18n.t(:"hints.format", {
+      I18n.t(:"hints.format", 
           :default   => "%{attribute} %{message}",
           :attribute => attr_name,
           :message   => message
-        })
+          )
     end
 
     def generate_message(attribute, type, options = {})
@@ -311,7 +311,11 @@ module ActiveModel
         :model => @base.class.model_name.human,
         :attribute => @base.class.human_attribute_name(attribute),
       }.merge(options)
-      I18n.translate(key, options)
+      I18n.translate(key, 
+                      :default => defaults,
+                      :model => @base.class.model_name.human,
+                      :attribute => @base.class.human_attribute_name(attribute),
+                    )
     end
 
   end
