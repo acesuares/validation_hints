@@ -311,12 +311,12 @@ module ActiveModel
       #   :model => @base.class.model_name.human,
       #   :attribute => @base.class.human_attribute_name(attribute),
       # }.merge(options)
-      I18n.translate(key, 
-                      :default => defaults,
-                      :model => @base.class.model_name.human,
-                      :attribute => @base.class.human_attribute_name(attribute),
-                      {options},
-                    )
+      I18n.translate( key,  
+                      default:   defaults,
+                      model:     @base.class.model_name.human,
+                      attribute: @base.class.human_attribute_name(attribute),
+                      count:     options[:count],
+                      )
     end
 
   end
