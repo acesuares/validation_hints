@@ -153,10 +153,14 @@ module ActiveModel
       return message if attribute == :base
 
       attr_name = attribute.to_s.tr(".", "_").humanize
-      attr_name = @base.class.human_attribute_name(attribute, default: attr_name)
+      attr_name = @base.class.human_attribute_name(attribute, default: attr_name, base: @base)
+
+      format_defaults = i18n_format_defaults
+      format_key = format_defaults.shift
+
       I18n.t(
-        :"hints.format",
-        default: "%{attribute} %{message}",
+        format_key,
+        default: format_defaults,
         attribute: attr_name,
         message: message
       )
@@ -273,26 +277,48 @@ module ActiveModel
     end
 
     def i18n_defaults(attribute, type, options)
-      attribute_name = attribute.to_s.delete_suffix("[]").remove(/\[\d+\]/)
+      attribute_name = attribute.to_s.remove(/\[\d+\]/)
+
+      defaults = model_hint_defaults(attribute_name, type)
+      defaults << options[:message] if options[:message]
 
       if @base.class.respond_to?(:i18n_scope)
         scope = @base.class.i18n_scope
-        model_defaults = @base.class.lookup_ancestors.flat_map do |klass|
-          [
-            :"#{scope}.hints.models.#{klass.model_name.i18n_key}.attributes.#{attribute_name}.#{type}",
-            :"#{scope}.hints.models.#{klass.model_name.i18n_key}.#{type}"
-          ]
-        end
-      else
-        model_defaults = []
+        defaults << :"#{scope}.hints.messages.#{type}"
       end
 
-      defaults = model_defaults
-      defaults << options[:message] if options[:message]
-      defaults << :"#{@base.class.i18n_scope}.hints.messages.#{type}" if @base.class.respond_to?(:i18n_scope)
+      defaults << :"activemodel.hints.messages.#{type}"
       defaults << :"hints.attributes.#{attribute_name}.#{type}"
       defaults << :"hints.messages.#{type}"
       defaults.compact.flatten
+    end
+
+    def model_hint_defaults(attribute_name, type)
+      return [] unless @base.class.respond_to?(:i18n_scope)
+
+      scope = @base.class.i18n_scope
+      @base.class.lookup_ancestors.flat_map do |klass|
+        [
+          :"#{scope}.hints.models.#{klass.model_name.i18n_key}.attributes.#{attribute_name}.#{type}",
+          :"#{scope}.hints.models.#{klass.model_name.i18n_key}.#{type}"
+        ]
+      end
+    end
+
+    def i18n_format_defaults
+      defaults = []
+
+      if @base.class.respond_to?(:i18n_scope)
+        scope = @base.class.i18n_scope
+        @base.class.lookup_ancestors.each do |klass|
+          defaults << :"#{scope}.hints.models.#{klass.model_name.i18n_key}.format"
+        end
+        defaults << :"#{scope}.hints.format"
+      end
+
+      defaults << :"activemodel.hints.format"
+      defaults << :"hints.format"
+      defaults << "%{attribute} %{message}"
     end
 
     def normalize_message(attribute, message, options = {})

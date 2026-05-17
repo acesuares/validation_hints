@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here.
 
+## 6.2.0
+
+I18n lookup chain and documentation (Phase 2).
+
+### Added
+
+- `activemodel.hints` and `activerecord.hints` locale scopes (format + lookup chain).
+- `test/active_model/i18n_test.rb` — app override and `human_attribute_name` coverage.
+- README: requirements, API, I18n lookup order, and `config/locales` override examples.
+
+### Changed
+
+- `generate_message` / `full_message` I18n fallback chain mirrors Rails errors (with `hints` namespace).
+- `full_message` passes `base: @base` to `human_attribute_name` and resolves format via scoped `hints.format` keys.
+
 ## 6.1.0
 
 Rails 7 compatibility for `ActiveModel::Hints` and expanded test coverage (Phase 1).

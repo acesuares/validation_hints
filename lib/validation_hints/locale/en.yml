@@ -1,5 +1,13 @@
 ---
 en:
+  activemodel:
+    hints:
+      format: "%{attribute} %{message}"
+
+  activerecord:
+    hints:
+      format: "%{attribute} %{message}"
+
   hints:
     format: "%{attribute} %{message}"
 
