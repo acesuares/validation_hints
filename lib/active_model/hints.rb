@@ -1,67 +1,37 @@
-module ActiveModel
-  # == Active Model Hints
-  #
-  # p = Person.new
-  # p.hints
-  # p.hints[:name]
-  # 
-  # more documentation needed
+# frozen_string_literal: true
 
+module ActiveModel
+  # Introspects declared validators and builds proactive hint messages (before +valid?+ fails).
+  #
+  # Conditional options (+:if+, +:unless+, +:on+) are not evaluated; hints reflect static rules.
+  # For +format+ validators, prefer a custom +message:+ or per-attribute I18n keys.
   class Hints
     include Enumerable
 
-    CALLBACKS_OPTIONS = [:if, :unless, :on, :allow_nil, :allow_blank, :strict]
-    MESSAGES_FOR_VALIDATORS = %w(confirmation acceptance presence uniqueness format associated numericality)
-    VALIDATORS_WITHOUT_MAIN_KEYS = %w(exclusion format inclusion length numericality)
-    # and these? validates_with validates_each
-    MESSAGES_FOR_OPTIONS = %w(within in is minimum maximum greater_than greater_than_or_equal_to equal_to less_than less_than_or_equal_to odd even only_integer)
-    OPTIONS_THAT_WE_DONT_USE_YET = {
-      :acceptance => :acceptance
+    MESSAGES_FOR_OPTIONS = %w[
+      within in is minimum maximum greater_than greater_than_or_equal_to
+      equal_to less_than less_than_or_equal_to odd even only_integer
+    ].freeze
 
-    }
-    VALIDATORS_THAT_WE_DONT_KNOW_WHAT_TO_DO_WITH = %w(validates_associated)
+    VALIDATORS_WITHOUT_MAIN_KEYS = %w[exclusion format inclusion length numericality].freeze
 
-    # Should virtual element for
-    #  validates :email, :confirmation => true
-    #  validates :email_confirmation, :presence => true
-    # also have a hint?
+    RANGE_OPTIONS = %w[within in].freeze
 
     attr_reader :messages
 
-    # Pass in the instance of the object that is using the errors object.
-    #
-    #   class Person
-    #     def initialize
-    #       @errors = ActiveModel::Errors.new(self)
-    #     end
-    #   end
     def initialize(base)
-      @base     = base
-      @messages = ActiveSupport::OrderedHash.new
-      @base.attributes.keys.each do |a|
-        @messages[a.to_sym] = hints_for(a.to_sym)
+      @base = base
+      @messages = {}
+      attribute_names_for_hints.each do |attribute|
+        @messages[attribute] = hints_for(attribute)
       end
     end
 
     def hints_for(attribute)
-      result = Array.new
-      @base.class.validators_on(attribute).map do |v|
-        validator = v.class.to_s.split('::').last.underscore.gsub('_validator','')
-        if v.options[:message].is_a?(Symbol)
-          message_key =  [validator, v.options[:message]].join('.') # if a message was supplied as a symbol, we use it instead
-          result << generate_message(attribute, message_key, v.options)
-        else
-          message_key =  validator
-          message_key =  [validator, ".must_be_a_number"].join('.') if validator == 'numericality' # create an option for numericality; the way YAML works a key (numericality) with subkeys (greater_than, etc etc) can not have a string itself. So we create a subkey for numericality
-          result << generate_message(attribute, message_key, v.options) unless VALIDATORS_WITHOUT_MAIN_KEYS.include?(validator)
-          v.options.each do |o|
-            if MESSAGES_FOR_OPTIONS.include?(o.first.to_s)
-              count = o.last
-              count = (o.last.to_sentence if %w(inclusion exclusion).include?(validator)) rescue o.last
-              result << generate_message(attribute, [ validator, o.first.to_s ].join('.'), { :count => count } )
-            end
-          end
-        end
+      attribute = attribute.to_sym
+      result = []
+      @base.class.validators_on(attribute).each do |validator|
+        result.concat(messages_for_validator(attribute, validator))
       end
       result
     end
@@ -71,143 +41,74 @@ module ActiveModel
     end
 
     def initialize_dup(other)
-      @messages = other.messages.dup
+      @messages = other.messages.transform_values(&:dup)
     end
 
-    # Backport dup from 1.9 so that #initialize_dup gets called
-    unless Object.respond_to?(:initialize_dup)
-      def dup # :nodoc:
-        copy = super
-        copy.initialize_dup(self)
-        copy
-      end
-    end
-
-    # Clear the messages
     def clear
       messages.clear
     end
 
-    # Do the hint messages include an hint with key +hint+?
-    def include?(hint)
-      (v = messages[hint]) && v.any?
+    def include?(attribute)
+      (value = messages[attribute.to_sym]) && value.any?
     end
-    alias :has_key? :include?
+    alias has_key? include?
 
-    # Get messages for +key+
     def get(key)
       messages[key]
     end
 
-    # Set messages for +key+ to +value+
     def set(key, value)
       messages[key] = value
     end
 
-    # Delete messages for +key+
     def delete(key)
       messages.delete(key)
     end
 
-    # When passed a symbol or a name of a method, returns an array of hints
-    # for the method.
-    #
-    #   p.hints[:name]   # => ["can not be nil"]
-    #   p.hints['name']  # => ["can not be nil"]
     def [](attribute)
       get(attribute.to_sym) || set(attribute.to_sym, [])
     end
 
-    # Adds to the supplied attribute the supplied hint message.
-    #
-    #   p.hints[:name] = "must be set"
-    #   p.hints[:name] # => ['must be set']
     def []=(attribute, hint)
       self[attribute] << hint
     end
 
-    # Iterates through each hint key, value pair in the hint messages hash.
-    # Yields the attribute and the hint for that attribute. If the attribute
-    # has more than one hint message, yields once for each hint message.
-    #
-    #   p.hints.add(:name, "can't be blank")
-    #   p.hints.each do |attribute, hints_array|
-    #     # Will yield :name and "can't be blank"
-    #   end
-    #
-    #   p.hints.add(:name, "must be specified")
-    #   p.hints.each do |attribute, hints_array|
-    #     # Will yield :name and "can't be blank"
-    #     # then yield :name and "must be specified"
-    #   end
     def each
       messages.each_key do |attribute|
         self[attribute].each { |hint| yield attribute, hint }
       end
     end
 
-    # Returns the number of error messages.
-    #
-    #   p.hints.add(:name, "can't be blank")
-    #   p.hints.size # => 1
-    #   p.hints.add(:name, "must be specified")
-    #   p.hints.size # => 2
     def size
       values.flatten.size
     end
 
-    # Returns all message values
     def values
       messages.values
     end
 
-    # Returns all message keys
     def keys
       messages.keys
     end
 
-    # Returns an array of hint messages, with the attribute name included
-    #
-    #   p.hints.add(:name, "can't be blank")
-    #   p.hints.add(:name, "must be specified")
-    #   p.hints.to_a # => ["name can't be blank", "name must be specified"]
     def to_a
       full_messages
     end
 
-    # Returns the number of hint messages.
-    #   p.hints.add(:name, "can't be blank")
-    #   p.hints.count # => 1
-    #   p.hints.add(:name, "must be specified")
-    #   p.hints.count # => 2
     def count
       to_a.size
     end
 
-    # Returns true if no hints are found, false otherwise.
-    # If the hint message is a string it can be empty.
     def empty?
-      all? { |k, v| v && v.empty? && !v.is_a?(String) }
+      messages.values.all?(&:empty?)
     end
     alias_method :blank?, :empty?
 
-    # Returns an xml formatted representation of the hints hash.
-    #
-    #   p.hints.add(:name, "can't be blank")
-    #   p.hints.add(:name, "must be specified")
-    #   p.hints.to_xml
-    #   # =>
-    #   #  <?xml version=\"1.0\" encoding=\"UTF-8\"?>
-    #   #  <hints>
-    #   #    <hint>name can't be blank</hint>
-    #   #    <hint>name must be specified</hint>
-    #   #  </hints>
-    def to_xml(options={})
-      to_a.to_xml options.reverse_merge(:root => "hints", :skip_types => true)
+    def to_xml(options = {})
+      to_a.to_xml(options.reverse_merge(root: "hints", skip_types: true))
     end
 
-    # Returns an ActiveSupport::OrderedHash that can be used as the JSON representation for this object.
-    def as_json(options=nil)
+    def as_json(_options = nil)
       to_hash
     end
 
@@ -215,13 +116,7 @@ module ActiveModel
       messages.dup
     end
 
-    # Adds +message+ to the hint messages on +attribute+. More than one hint can be added to the same
-    # +attribute+.
-    # If no +message+ is supplied, <tt>:invalid</tt> is assumed.
-    #
-    # If +message+ is a symbol, it will be translated using the appropriate scope (see +translate_hint+).
-    # If +message+ is a proc, it will be called, allowing for things like <tt>Time.now</tt> to be used within an hint.
-    def add(attribute, message = nil, options = {})
+    def add(attribute, message = :invalid, options = {})
       message = normalize_message(attribute, message, options)
       if options[:strict]
         raise ActiveModel::StrictValidationFailed, full_message(attribute, message)
@@ -230,95 +125,187 @@ module ActiveModel
       self[attribute] << message
     end
 
-    # Will add an hint message to each of the attributes in +attributes+ that is empty.
     def add_on_empty(attributes, options = {})
-      [attributes].flatten.each do |attribute|
+      Array(attributes).each do |attribute|
         value = @base.send(:read_attribute_for_validation, attribute)
         is_empty = value.respond_to?(:empty?) ? value.empty? : false
         add(attribute, :empty, options) if value.nil? || is_empty
       end
     end
 
-    # Will add an hint message to each of the attributes in +attributes+ that is blank (using Object#blank?).
     def add_on_blank(attributes, options = {})
-      [attributes].flatten.each do |attribute|
+      Array(attributes).each do |attribute|
         value = @base.send(:read_attribute_for_validation, attribute)
         add(attribute, :blank, options) if value.blank?
       end
     end
 
-    # Returns true if an hint on the attribute with the given message is present, false otherwise.
-    # +message+ is treated the same as for +add+.
-    #   p.hints.add :name, :blank
-    #   p.hints.added? :name, :blank # => true
-    def added?(attribute, message = nil, options = {})
+    def added?(attribute, message = :invalid, options = {})
       message = normalize_message(attribute, message, options)
-      self[attribute].include? message
+      self[attribute].include?(message)
     end
 
-    # Returns all the full hint messages in an array.
-    #
-    #   class Company
-    #     validates_presence_of :name, :address, :email
-    #     validates_length_of :name, :in => 5..30
-    #   end
-    #
-    #   company = Company.create(:address => '123 First St.')
-    #   company.hints.full_messages # =>
-    #     ["Name is too short (minimum is 5 characters)", "Name can't be blank", "Email can't be blank"]
     def full_messages
       map { |attribute, message| full_message(attribute, message) }
     end
 
-    # Returns a full message for a given attribute.
-    #
-    #   company.hints.full_message(:name, "is invalid")  # =>
-    #     "Name is invalid"
     def full_message(attribute, message)
       return message if attribute == :base
-      attr_name = attribute.to_s.gsub('.', '_').humanize
-      attr_name = @base.class.human_attribute_name(attribute, :default => attr_name)
-      I18n.t(:"hints.format", 
-          :default   => "%{attribute} %{message}",
-          :attribute => attr_name,
-          :message   => message
-          )
+
+      attr_name = attribute.to_s.tr(".", "_").humanize
+      attr_name = @base.class.human_attribute_name(attribute, default: attr_name)
+      I18n.t(
+        :"hints.format",
+        default: "%{attribute} %{message}",
+        attribute: attr_name,
+        message: message
+      )
     end
 
     def generate_message(attribute, type, options = {})
-      #options.delete(:message) if options[:message].is_a?(Symbol)
-      if @base.class.respond_to?(:i18n_scope)
-        defaults = @base.class.lookup_ancestors.map do |klass|
-          [ :"#{@base.class.i18n_scope}.hints.models.#{klass.model_name.i18n_key}.attributes.#{attribute}.#{type}",
-            :"#{@base.class.i18n_scope}.hints.models.#{klass.model_name.i18n_key}.#{type}" ]
-        end
-      else
-        defaults = []
-      end
+      type = options.delete(:message) if options[:message].is_a?(Symbol)
+      value = (attribute != :base ? @base.read_attribute_for_validation(attribute) : nil)
 
-      defaults << options[:message] # defaults << options.delete(:message)
-      defaults << :"#{@base.class.i18n_scope}.hints.messages.#{type}" if @base.class.respond_to?(:i18n_scope)
-      defaults << :"hints.attributes.#{attribute}.#{type}"
-      defaults << :"hints.messages.#{type}"
+      interpolation = {
+        model: @base.model_name.human,
+        attribute: @base.class.human_attribute_name(attribute, base: @base),
+        value: value,
+        object: @base,
+        count: options[:count],
+        minimum: options[:minimum],
+        maximum: options[:maximum]
+      }.compact
 
-      defaults.compact!
-      defaults.flatten!
-
+      defaults = i18n_defaults(attribute, type, options)
       key = defaults.shift
 
-      # options = {
-      #   :default => defaults,
-      #   :model => @base.class.model_name.human,
-      #   :attribute => @base.class.human_attribute_name(attribute),
-      # }.merge(options)
-      I18n.translate( key,  
-                      default:   defaults,
-                      model:     @base.class.model_name.human,
-                      attribute: @base.class.human_attribute_name(attribute),
-                      count:     options[:count],
-                      )
+      I18n.translate(key, **interpolation.merge(default: defaults))
     end
 
-  end
+    private
 
+    def attribute_names_for_hints
+      from_record =
+        if @base.respond_to?(:attributes)
+          @base.attributes.keys
+        else
+          []
+        end
+
+      from_validators = @base.class.validators.flat_map(&:attributes).map(&:to_s)
+      (from_record + from_validators).map(&:to_sym).uniq
+    end
+
+    def messages_for_validator(attribute, validator)
+      key = validator_key(validator)
+      options = validator.options
+      result = []
+
+      if options[:allow_blank] && key == "presence"
+        return result
+      end
+
+      if options[:message].is_a?(Symbol)
+        message_key = "#{key}.#{options[:message]}"
+        result << generate_message(attribute, message_key, options)
+        return result
+      end
+
+      message_key = key
+      message_key = "numericality.must_be_a_number" if key == "numericality"
+      unless VALIDATORS_WITHOUT_MAIN_KEYS.include?(key)
+        result << generate_message(attribute, message_key, options)
+      end
+
+      if key == "length" && options[:minimum] && options[:maximum]
+        result << generate_message(
+          attribute,
+          "length.within",
+          minimum: options[:minimum],
+          maximum: options[:maximum]
+        )
+        return result
+      end
+
+      options.each do |option, value|
+        next unless MESSAGES_FOR_OPTIONS.include?(option.to_s)
+
+        if RANGE_OPTIONS.include?(option.to_s) && value.is_a?(Range)
+          result.concat(range_hint_messages(attribute, key, value))
+        else
+          count = inclusion_exclusion_count(key, value)
+          result << generate_message(
+            attribute,
+            "#{key}.#{option}",
+            options.merge(count: count)
+          )
+        end
+      end
+
+      result
+    end
+
+    def range_hint_messages(attribute, validator_key, range)
+      minimum = range.min
+      maximum = range.max
+      maximum -= 1 if range.exclude_end?
+
+      if validator_key == "length"
+        [
+          generate_message(attribute, "#{validator_key}.within", minimum: minimum, maximum: maximum),
+        ]
+      else
+        [
+          generate_message(attribute, "#{validator_key}.minimum", count: minimum),
+          generate_message(attribute, "#{validator_key}.maximum", count: maximum)
+        ]
+      end
+    end
+
+    def inclusion_exclusion_count(validator_key, value)
+      return value.to_sentence if %w[inclusion exclusion].include?(validator_key) && value.respond_to?(:to_sentence)
+
+      value
+    end
+
+    def validator_key(validator)
+      validator.class.name.demodulize.underscore.delete_suffix("_validator")
+    end
+
+    def i18n_defaults(attribute, type, options)
+      attribute_name = attribute.to_s.delete_suffix("[]").remove(/\[\d+\]/)
+
+      if @base.class.respond_to?(:i18n_scope)
+        scope = @base.class.i18n_scope
+        model_defaults = @base.class.lookup_ancestors.flat_map do |klass|
+          [
+            :"#{scope}.hints.models.#{klass.model_name.i18n_key}.attributes.#{attribute_name}.#{type}",
+            :"#{scope}.hints.models.#{klass.model_name.i18n_key}.#{type}"
+          ]
+        end
+      else
+        model_defaults = []
+      end
+
+      defaults = model_defaults
+      defaults << options[:message] if options[:message]
+      defaults << :"#{@base.class.i18n_scope}.hints.messages.#{type}" if @base.class.respond_to?(:i18n_scope)
+      defaults << :"hints.attributes.#{attribute_name}.#{type}"
+      defaults << :"hints.messages.#{type}"
+      defaults.compact.flatten
+    end
+
+    def normalize_message(attribute, message, options = {})
+      case message
+      when Symbol
+        generate_message(attribute, message, options)
+      when Proc
+        message.call
+      when nil
+        generate_message(attribute, :invalid, options)
+      else
+        message
+      end
+    end
+  end
 end

@@ -4,11 +4,10 @@ require "test_helper"
 
 class ValidationHintsTest < Minitest::Test
   def test_version
-    assert_equal "6.0.0", ValidationHints::VERSION
+    assert_equal "6.1.0", ValidationHints::VERSION
   end
 
   def test_locale_path_exists
-    assert File.file?(ValidationHints::LOCALE_PATH),
-           "expected locale at #{ValidationHints::LOCALE_PATH}"
+    assert File.file?(ValidationHints::LOCALE_PATH)
   end
 end
