@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 6.2.1
+
+### Fixed
+
+- **`ActiveModel::Hints` and frozen validator options:** duplicate `validator.options` and `generate_message` options before mutation so Rails 7 frozen presence validators (`message: :required`) no longer raise `can't modify frozen Hash`.
+
 ## 6.2.0
 
 I18n lookup chain and documentation (Phase 2).

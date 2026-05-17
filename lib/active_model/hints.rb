@@ -167,6 +167,7 @@ module ActiveModel
     end
 
     def generate_message(attribute, type, options = {})
+      options = options.dup
       type = options.delete(:message) if options[:message].is_a?(Symbol)
       value = (attribute != :base ? @base.read_attribute_for_validation(attribute) : nil)
 
@@ -202,7 +203,7 @@ module ActiveModel
 
     def messages_for_validator(attribute, validator)
       key = validator_key(validator)
-      options = validator.options
+      options = validator.options.dup
       result = []
 
       if options[:allow_blank] && key == "presence"
