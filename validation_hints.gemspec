@@ -1,6 +1,6 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "validation_hints/version"
+# frozen_string_literal: true
+
+require_relative "lib/validation_hints/version"
 
 Gem::Specification.new do |s|
   s.name        = "validation_hints"
@@ -8,22 +8,30 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Ace Suares"]
   s.email       = ["ace@suares.com"]
-  s.homepage    = %q{http://github.com/acesuares/validation_hints}
-  s.summary     = %q{Validation Hints.}
-  s.description = %q{Hints for validation.}
-  s.licenses    = ["MIT"]
+  s.homepage    = "https://github.com/acesuares/validation_hints"
+  s.summary     = "Proactive validation hints derived from model validators"
+  s.description = "Shows what a field expects before validation fails — complementary to ActiveModel errors."
+  s.license     = "MIT"
+  s.required_ruby_version = ">= 3.2.0"
 
-  s.rubyforge_project = "validation_hints"
+  if File.directory?(File.join(__dir__, ".git"))
+    s.files      = `git ls-files`.split("\n")
+    s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
+  else
+    s.files = Dir.chdir(__dir__) do
+      Dir.glob("{lib,test}/**/*", File::FNM_DOTMATCH).reject do |f|
+        f.end_with?(".gem") || f.start_with?("stuff/")
+      end + %w[README.md LICENSE.txt CHANGELOG.md Gemfile Rakefile validation_hints.gemspec]
+    end
+    s.test_files = Dir.glob("{test,spec}/**/*", base: __dir__)
+  end
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_development_dependency(%q<rspec-rails>, [">= 0"])
-  s.add_development_dependency(%q<shoulda>, [">= 0"])
-  s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
-  s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
-  s.add_development_dependency(%q<rcov>, [">= 0"])
+  s.add_dependency "activerecord", ">= 7.0", "< 7.1"
 
+  s.add_development_dependency "rails", ">= 7.0", "< 7.1"
+  s.add_development_dependency "sqlite3", "~> 1.4"
+  s.add_development_dependency "minitest", "~> 5.0"
+  s.add_development_dependency "bundler", ">= 2.0"
 end

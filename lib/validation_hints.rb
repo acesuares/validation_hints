@@ -1,39 +1,26 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
 
-require 'validation_hints/version'
-require 'active_model/hints'
+require "validation_hints/version"
+require "active_model/hints"
 
-module ActiveModel
+module ValidationHints
+  LOCALE_PATH = File.expand_path("validation_hints/locale/en.yml", __dir__)
 
-  module Validations
+  def self.load_i18n!
+    return if @i18n_loaded
 
-    module ClassMethods
-
-      def has_validations?
-        ! self.validators.empty?
-      end
-
-      def has_validations_for?(attribute)
-        ! self.validators_on(attribute).empty?
-      end
-
-    end
-
-    def has_validations?
-      self.class.has_validations?
-    end
-
-    def has_validations_for?(attribute)
-      self.class.has_validations_for?(attribute)
-    end
-
-    def hints
-      @hints ||= Hints.new(self)
-    end
-
+    require "i18n"
+    I18n.load_path << LOCALE_PATH unless I18n.load_path.include?(LOCALE_PATH)
+    @i18n_loaded = true
   end
-
 end
 
-require 'active_support/i18n'
-I18n.load_path << File.dirname(__FILE__) + '/validation_hints/locale/en.yml'
+require "validation_hints/validations_patch"
+
+if defined?(Rails::Railtie)
+  require "validation_hints/railtie"
+else
+  require "active_model"
+  ValidationHints::ValidationsPatch.apply!
+  ValidationHints.load_i18n!
+end
