@@ -4,7 +4,7 @@ require "test_helper"
 
 class ValidationHintsTest < Minitest::Test
   def test_version
-    assert_equal "7.13.1", ValidationHints::VERSION
+    assert_equal "7.13.3", ValidationHints::VERSION
   end
 
   def test_locale_path_exists
