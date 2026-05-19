@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 7.13.4
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **7.13.4** (companion release; no API changes in this gem). Pairs with the inline_forms rich_text-create Restore symmetry fix.
+
 ## 7.13.3
 
 ### Changed
