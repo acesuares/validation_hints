@@ -2,13 +2,13 @@
 
 Proactive validation hints derived from model validators — complementary to Rails `errors` (which react after `valid?` fails).
 
-**Requirements:** Ruby >= 3.2, Rails / Active Record 7.1.x (`>= 7.1.5`, `< 7.2`). Used by [inline_forms](https://github.com/acesuares/inline_forms) 7.x for label tooltips on validated fields.
+**Requirements:** Ruby >= 4.0, Rails / Active Record 7.2.x (`>= 7.2.3.1`, `< 7.3`). Used by [inline_forms](https://github.com/acesuares/inline_forms) 7.x for label tooltips on validated fields.
 
 ## Install
 
 ```ruby
 # Gemfile
-gem "validation_hints", "~> 6.2"
+gem "validation_hints", "~> 7.12"
 ```
 
 Rails apps load the gem via `ValidationHints::Railtie` (no manual `require`).
@@ -117,7 +117,7 @@ en:
 
 ## Security
 
-Runtime dependency is **Active Record 7.1.x** only (no Action View / Active Storage in the gem).
+Runtime dependency is **Active Record 7.2.x** only (no Action View / Active Storage in the gem).
 
 Dev dependencies were slimmed from full `rails` to `activerecord` + `activemodel` to reduce audit noise. Run:
 
@@ -125,7 +125,7 @@ Dev dependencies were slimmed from full `rails` to `activerecord` + `activemodel
 bundler-audit check --update
 ```
 
-Rails **7.1.x** may still report advisories fixed only in 7.2.3.1+; see roadmap Phase 5 for coordinated bumps.
+Rails **7.2.x** advisories: run `bundle exec bundler-audit` in your app; bump patch releases as needed.
 
 ## Tests
 
@@ -136,7 +136,7 @@ bundle install
 bundle exec rake test
 ```
 
-Runs Minitest against an in-memory SQLite Active Record 7.1 app (`test/test_helper.rb`).
+Runs Minitest against an in-memory SQLite Active Record 7.2 app (`test/test_helper.rb`).
 
 ## History
 

@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = "Proactive validation hints derived from model validators"
   s.description = "Shows what a field expects before validation fails — complementary to ActiveModel errors."
   s.license     = "MIT"
-  s.required_ruby_version = ">= 3.2.0"
+  s.required_ruby_version = ">= 4.0.0"
 
   if File.directory?(File.join(__dir__, ".git"))
     s.files      = `git ls-files`.split("\n")
@@ -28,10 +28,10 @@ Gem::Specification.new do |s|
 
   s.require_paths = ["lib"]
 
-  s.add_dependency "activerecord", ">= 7.1.5", "< 7.2"
+  s.add_dependency "activerecord", ">= 7.2.3.1", "< 7.3"
 
-  s.add_development_dependency "activerecord", ">= 7.1.5", "< 7.2"
-  s.add_development_dependency "activemodel", ">= 7.1.5", "< 7.2"
+  s.add_development_dependency "activerecord", ">= 7.2.3.1", "< 7.3"
+  s.add_development_dependency "activemodel", ">= 7.2.3.1", "< 7.3"
   s.add_development_dependency "sqlite3", "~> 1.4"
   s.add_development_dependency "minitest", "~> 5.0"
   s.add_development_dependency "rake", "~> 13.0"

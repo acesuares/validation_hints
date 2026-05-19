@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here.
 
+## 7.12.0
+
+### Changed
+
+- **Rails 7.2:** runtime `activerecord` `>= 7.2.3.1`, `< 7.3` (was 7.1.x).
+- **Ruby 4.0:** `required_ruby_version >= 4.0.0`.
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **7.12.0**.
+
+### Verified
+
+- **`bundle exec rake test`** — **24 runs, 50 assertions, 0 failures** on Rails 7.2 / Ruby 4.0.
+
 ## 7.0.0
 
 ### Changed
