@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here.
 
+## 6.2.2
+
+### Added
+
+- **Tests:** `confirmation` validator hint; custom `message:` as Symbol (with I18n override).
+- **README:** inline_forms integration note; expanded `bundle exec rake test` instructions.
+
+### Fixed
+
+- **Custom `message:` Symbol:** strip `:message` from options before `generate_message` so lookup uses `presence.required` (not bare `required`).
+
 ## 6.2.1
 
 ### Fixed

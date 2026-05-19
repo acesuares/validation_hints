@@ -2,7 +2,7 @@
 
 Proactive validation hints derived from model validators — complementary to Rails `errors` (which react after `valid?` fails).
 
-**Requirements:** Ruby >= 3.2, Rails / Active Record 7.0.x (`>= 7.0`, `< 7.1`). Used by [inline_forms](https://github.com/acesuares/inline_forms).
+**Requirements:** Ruby >= 3.2, Rails / Active Record 7.0.x (`>= 7.0`, `< 7.1`). Used by [inline_forms](https://github.com/acesuares/inline_forms) 7.x for label tooltips on validated fields.
 
 ## Install
 
@@ -12,6 +12,10 @@ gem "validation_hints", "~> 6.2"
 ```
 
 Rails apps load the gem via `ValidationHints::Railtie` (no manual `require`).
+
+### inline_forms
+
+Generated apps include `validation_hints` automatically. The engine patches load order so hints work when `rails/all` loads before Bundler. Tooltips use `has_validations_for?`, `hints.full_messages_for`, and Tippy.js in inline_forms 7.9.x — see inline_forms `CHANGELOG.md`.
 
 ## Example
 
@@ -84,9 +88,14 @@ Attribute labels in full messages come from the normal Rails path (`activerecord
 
 ## Tests
 
+From the gem root:
+
 ```bash
+bundle install
 bundle exec rake test
 ```
+
+Runs Minitest against an in-memory SQLite Active Record 7.0 app (`test/test_helper.rb`).
 
 ## History
 

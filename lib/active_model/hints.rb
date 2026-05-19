@@ -212,7 +212,9 @@ module ActiveModel
 
       if options[:message].is_a?(Symbol)
         message_key = "#{key}.#{options[:message]}"
-        result << generate_message(attribute, message_key, options)
+        generate_options = options.dup
+        generate_options.delete(:message)
+        result << generate_message(attribute, message_key, generate_options)
         return result
       end
 

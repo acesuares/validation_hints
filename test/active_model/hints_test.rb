@@ -74,4 +74,30 @@ class ActiveModelHintsTest < Minitest::Test
     validators = Person.validators_on(:name).map { |v| v.class.name.demodulize }
     assert_includes validators, "PresenceValidator"
   end
+
+  def test_confirmation_hint
+    hints = @person.hints[:password]
+    assert_includes hints, "doesn't match confirmation"
+  end
+
+  def test_custom_message_as_symbol
+    I18n.backend.store_translations(:en, activerecord: {
+      hints: {
+        models: {
+          person: {
+            attributes: {
+              email: {
+                "presence" => { "required" => "is required" }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    hints = @person.hints[:email]
+    assert_includes hints, "is required"
+    messages = @person.hints.full_messages_for(:email)
+    assert_includes messages, "Email is required"
+  end
 end
