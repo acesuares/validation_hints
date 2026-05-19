@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## 7.0.0
+
+### Changed
+
+- **Major version bump.** Marks the Rails 7.1 line as stable (6.3.0 dropped Rails 7.0; 6.4.0 added format / custom / `validates_with` coverage). No API changes since 6.4.0.
+- **Consumers:** `inline_forms` gemspec must widen its constraint to `>= 6.3, < 8.0` (or pin `~> 7.0`) to pick up this release.
+
 ## 6.4.0
 
 ### Added
