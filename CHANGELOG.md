@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 7.13.1
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **7.13.1** (companion release; no API changes in this gem).
+
 ## 7.13.0
 
 ### Changed
