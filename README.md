@@ -2,7 +2,7 @@
 
 Proactive validation hints derived from model validators — complementary to Rails `errors` (which react after `valid?` fails).
 
-**Requirements:** Ruby >= 3.2, Rails / Active Record 7.0.x (`>= 7.0`, `< 7.1`). Used by [inline_forms](https://github.com/acesuares/inline_forms) 7.x for label tooltips on validated fields.
+**Requirements:** Ruby >= 3.2, Rails / Active Record 7.1.x (`>= 7.1.5`, `< 7.2`). Used by [inline_forms](https://github.com/acesuares/inline_forms) 7.x for label tooltips on validated fields.
 
 ## Install
 
@@ -86,6 +86,18 @@ en:
 
 Attribute labels in full messages come from the normal Rails path (`activerecord.attributes.<model>.<attr>`), same as errors.
 
+## Security
+
+Runtime dependency is **Active Record 7.1.x** only (no Action View / Active Storage in the gem).
+
+Dev dependencies were slimmed from full `rails` to `activerecord` + `activemodel` to reduce audit noise. Run:
+
+```bash
+bundler-audit check --update
+```
+
+Rails **7.1.x** may still report advisories fixed only in 7.2.3.1+; see roadmap Phase 5 for coordinated bumps.
+
 ## Tests
 
 From the gem root:
@@ -95,7 +107,7 @@ bundle install
 bundle exec rake test
 ```
 
-Runs Minitest against an in-memory SQLite Active Record 7.0 app (`test/test_helper.rb`).
+Runs Minitest against an in-memory SQLite Active Record 7.1 app (`test/test_helper.rb`).
 
 ## History
 

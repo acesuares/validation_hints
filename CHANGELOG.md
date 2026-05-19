@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here.
 
+## 6.3.0
+
+### Changed
+
+- **Rails 7.1:** runtime `activerecord` `>= 7.1.5`, `< 7.2` (was 7.0.x).
+- **Dev deps:** dropped full `rails` gem; use `activerecord`, `activemodel`, `rake`, `sqlite3`, `minitest` only.
+
+### Added
+
+- **README:** security / `bundler-audit` section.
+
+### Verified
+
+- **`bundle exec rake test`** — **21 runs, 44 assertions, 0 failures** on Rails 7.1.
+
 ## 6.2.3
 
 ### Added
