@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here.
 
+## 7.13.0
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **7.13.0** (Track B companion release; no API changes in this gem).
+
+### Verified
+
+- **`bundle exec rake test`** — green on Rails 7.2 / Ruby 4.0.
+
 ## 7.12.0
 
 ### Changed

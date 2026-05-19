@@ -8,7 +8,7 @@ Proactive validation hints derived from model validators — complementary to Ra
 
 ```ruby
 # Gemfile
-gem "validation_hints", "~> 7.12"
+gem "validation_hints", "~> 7.13"
 ```
 
 Rails apps load the gem via `ValidationHints::Railtie` (no manual `require`).
