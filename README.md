@@ -86,6 +86,35 @@ en:
 
 Attribute labels in full messages come from the normal Rails path (`activerecord.attributes.<model>.<attr>`), same as errors.
 
+## Conditional validators
+
+`:if`, `:unless`, and `:on` are **not evaluated** when building hints. Hints describe the static validation rules declared on the model, not whether they would run for the current record state. Use `errors` (after `valid?`) when you need conditional feedback.
+
+## Custom validators
+
+### `validates :attr, my_validator: true` (EachValidator)
+
+The hint type is derived from the validator class name (`MyValidator` → `my`). Add copy under `hints.messages.my` or per-model/per-attribute keys in the lookup chain.
+
+### `validates_with MyValidator` (class validator)
+
+Only **EachValidator**-style validators (declared per attribute) produce hints automatically. Class-level `ActiveModel::Validator` implementations are not introspectable for attribute lists — prefer `validates :attr, …` or an EachValidator subclass when you need hint tooltips.
+
+## Format validators
+
+`validates :attr, format: { with: /…/ }` emits the default **`hints.messages.format`** copy (“must match the required format”). Override globally, per model, or per attribute via the I18n lookup chain; or set `message:` on the validator.
+
+```yaml
+en:
+  activerecord:
+    hints:
+      models:
+        person:
+          attributes:
+            code:
+              format: "must be numeric"
+```
+
 ## Security
 
 Runtime dependency is **Active Record 7.1.x** only (no Action View / Active Storage in the gem).

@@ -28,6 +28,26 @@ class Person < ActiveRecord::Base
   validates :status, inclusion: { in: %w[active inactive] }
   validates :password, confirmation: true
   validates :email, presence: { message: :required }
+  validates :code, format: { with: /\A\d+\z/ }
+end
+
+class EmailFormatValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    record.errors.add(attribute, :invalid) unless value.to_s.include?("@")
+  end
+end
+
+class CodePresenceValidator < ActiveModel::Validator
+  def validate(record)
+    record.errors.add(:code, :blank) if record.code.blank?
+  end
+end
+
+class CustomValidatorPerson < ActiveRecord::Base
+  self.table_name = "people"
+
+  validates :email, email_format: true
+  validates_with CodePresenceValidator
 end
 
 class Profile < ActiveRecord::Base

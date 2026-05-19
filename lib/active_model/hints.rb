@@ -197,7 +197,11 @@ module ActiveModel
           []
         end
 
-      from_validators = @base.class.validators.flat_map(&:attributes).map(&:to_s)
+      from_validators = @base.class.validators.flat_map do |validator|
+        next [] unless validator.respond_to?(:attributes)
+
+        validator.attributes
+      end.map(&:to_s)
       (from_record + from_validators).map(&:to_sym).uniq
     end
 
@@ -215,6 +219,11 @@ module ActiveModel
         generate_options = options.dup
         generate_options.delete(:message)
         result << generate_message(attribute, message_key, generate_options)
+        return result
+      end
+
+      if key == "format"
+        result << generate_message(attribute, "format", options)
         return result
       end
 

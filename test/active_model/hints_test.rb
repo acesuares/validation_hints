@@ -100,4 +100,21 @@ class ActiveModelHintsTest < Minitest::Test
     messages = @person.hints.full_messages_for(:email)
     assert_includes messages, "Email is required"
   end
+
+  def test_format_validator_hint
+    hints = @person.hints[:code]
+    assert_includes hints, "must match the required format"
+  end
+
+  def test_custom_each_validator_hint
+    person = CustomValidatorPerson.new
+    hints = person.hints[:email]
+    assert_includes hints, "must look like an email address"
+  end
+
+  def test_validates_with_class_validator_does_not_crash
+    person = CustomValidatorPerson.new
+    person.hints[:name]
+    assert_empty person.hints[:code], "validates_with class validators are not introspectable for hints"
+  end
 end

@@ -20,6 +20,7 @@ en:
       exclusion:
         in: "must not be one of %{count}"
       format: "must match the required format"
+      email_format: "must look like an email address"
       associated: "is invalid"
       uniqueness: "must be unique"
       confirmation: "doesn't match confirmation"

@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here.
 
+## 6.4.0
+
+### Added
+
+- **Format validator hints:** `validates …, format: { with: … }` now emits `hints.messages.format` (was empty).
+- **Custom EachValidator hints:** lookup via `hints.messages.<validator_key>` (e.g. `email_format`).
+- **Tests:** format, custom EachValidator, `validates_with` class validator does not crash.
+
+### Changed
+
+- **`attribute_names_for_hints`:** skip validators without an `attributes` list (`validates_with` class validators).
+
+### Added (docs)
+
+- README: conditional validators, custom/`validates_with` validators, format I18n conventions.
+
 ## 6.3.0
 
 ### Changed
