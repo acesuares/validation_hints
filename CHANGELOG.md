@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here.
 
+## 6.2.3
+
+### Added
+
+- **`stuff/smoke_test.sh`** — rake test + in-memory SQLite console smoke (`Widget.new.hints[:name]`).
+
+### Changed
+
+- **`stuff/analysis.md`** — updated for 6.2.x, inline_forms 7.9.x Tippy integration, API table.
+
 ## 6.2.2
 
 ### Added
