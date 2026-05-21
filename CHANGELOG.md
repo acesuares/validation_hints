@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 7.13.11
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **7.13.11** (companion release; no API changes).
+
 ## 7.13.10
 
 ### Changed
