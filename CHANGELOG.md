@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 7.13.10
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **7.13.10** (companion release; no API changes). Generated apps now pin `validation_hints '~> 7'` alongside `inline_forms '~> 7'`.
+
 ## 7.13.9
 
 ### Changed
