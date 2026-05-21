@@ -2,10 +2,11 @@
 
 All notable changes to this project are documented here.
 
-## Unreleased
+## 7.13.12
 
 ### Changed
 
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **7.13.12** (companion release).
 - **`Rakefile`:** `bundler/setup` is no longer loaded for `rake release` (fixes `Could not find sqlite3-…` when dev bundle was not installed). `rake test` runs `bundle install` if needed, then loads the bundle.
 
 ## 7.13.11
