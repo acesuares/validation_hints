@@ -4,6 +4,10 @@ All notable changes to this project are documented here.
 
 ## 8.0.3
 
+### Added
+
+- **Rails 8 release (Phase 5):** `stuff/rails-8-checklist.md` archived as complete; `stuff/analysis.md` and `stuff/roadmap.md` updated for 8.0.x stack.
+
 ### Changed
 
 - **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.0.3** (companion release; no API changes).
