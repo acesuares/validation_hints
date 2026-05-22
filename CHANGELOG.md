@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here.
 
+## 8.0.0
+
+### Fixed
+
+- **`test/validation_hints_test.rb`:** version assert updated to **8.0.0**.
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.0.0** (opens the 8.x release line; **Rails / Active Record still 7.2.x** until the Rails 8 migration ships).
+
 ## 7.13.18
 
 ### Changed
