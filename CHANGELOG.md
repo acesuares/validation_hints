@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here.
 
+## 8.0.1
+
+### Changed
+
+- **Active Record:** require **`>= 8.0`, `< 8.1`** (resolved **8.0.5** in dev). **inline_forms** must stay on validation_hints **8.0.1+** once it adopts Rails 8.
+- **Dev:** `sqlite3` **`>= 2.1`** (Rails 8 sqlite3 adapter requirement).
+
+### Fixed
+
+- No code changes in `lib/active_model/hints.rb`; full suite and `stuff/smoke_test.sh` pass on AR 8.0.
+
 ## 8.0.0
 
 ### Fixed
