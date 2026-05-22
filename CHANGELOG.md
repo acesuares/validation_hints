@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.0.2
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.0.2** (companion release; no API changes).
+
 ## 8.0.1
 
 ### Changed
