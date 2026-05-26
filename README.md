@@ -2,7 +2,7 @@
 
 Proactive validation hints derived from model validators — complementary to Rails `errors` (which react after `valid?` fails).
 
-**Requirements:** Ruby >= 4.0, Rails / Active Record **8.0.x** (`>= 8.0`, `< 8.1`). Used by [inline_forms](https://github.com/acesuares/inline_forms) 8.x for label tooltips on validated fields.
+**Requirements:** Ruby >= 4.0, Rails / Active Record **8.1.x** (`>= 8.1`, `< 8.2`). Used by [inline_forms](https://github.com/acesuares/inline_forms) 8.x for label tooltips on validated fields.
 
 ## Install
 

@@ -28,10 +28,10 @@ Gem::Specification.new do |s|
 
   s.require_paths = ["lib"]
 
-  s.add_dependency "activerecord", ">= 8.0", "< 8.1"
+  s.add_dependency "activerecord", ">= 8.1", "< 8.2"
 
-  s.add_development_dependency "activerecord", ">= 8.0", "< 8.1"
-  s.add_development_dependency "activemodel", ">= 8.0", "< 8.1"
+  s.add_development_dependency "activerecord", ">= 8.1", "< 8.2"
+  s.add_development_dependency "activemodel", ">= 8.1", "< 8.2"
   s.add_development_dependency "sqlite3", ">= 2.1"
   s.add_development_dependency "minitest", "~> 5.0"
   s.add_development_dependency "rake", "~> 13.0"

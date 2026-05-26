@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.2
+
+### Changed
+
+- **Rails 8.1:** require **`activerecord` / `activemodel` `>= 8.1`, `< 8.2`** (was `>= 8.0, < 8.1`). Resolves Active Record / Active Model **8.1.x** in dev. No API changes; the `ActiveModel::Validations` patches and `ActiveModel::Hints` remain compatible.
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.2** (companion release).
+
 ## 8.1.1
 
 ### Changed
