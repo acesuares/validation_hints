@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.3
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.3** (companion release; no API changes in validation_hints; lockstep bump for the PaperTrail 17.0 + `-U` collision-check release).
+
 ## 8.1.2
 
 ### Changed
