@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.4
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.4** (companion release for the user-model search-scope fix and `MODEL_TABS` plumbing fix; no API changes in validation_hints).
+
 ## 8.1.3
 
 ### Changed
