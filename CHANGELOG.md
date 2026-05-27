@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.8
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.8** (companion release for re-introducing `money_field`, `scale_with_integers` and `scale_with_values` into the `FormElementShowcase` example resource, money-rails wired into the installer Gemfile, and a nil-guard on `money_field_show`; no API changes in validation_hints).
+
 ## 8.1.7
 
 ### Changed
