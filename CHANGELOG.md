@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.7
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.7** (companion release for three crashing `_show` helpers — `dropdown_with_integers`, `scale_with_integers`, `scale_with_values` — plus the `Versions (N)` header flicker fix and removal of debug `puts` statements in `month_year_picker_update`; no API changes in validation_hints).
+
 ## 8.1.6
 
 ### Changed
