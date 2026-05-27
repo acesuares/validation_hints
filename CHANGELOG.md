@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.5
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.5** (companion release for the hard-breaking `inline_forms_attribute_list` row-shape change in inline_forms; no API changes in validation_hints).
+
 ## 8.1.4
 
 ### Changed
