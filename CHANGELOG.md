@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.9
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.9** (companion release for the dropdown_with_values double-translation fix, `money_field_show` always-show-cents fix, `FormElementShowcase` swap from `roles:info_list` to `locales:check_list + locales_display:info_list` with four seeded locales and populated file/audio/cover uploads, and the new locales-associations integration test; no API changes in validation_hints).
+
 ## 8.1.8
 
 ### Changed
