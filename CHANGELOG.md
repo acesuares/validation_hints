@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.16
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.16** (companion release for post-delete undo fixes **8.1.12**–**8.1.16**: CanCan on `revert`, correct destroy PaperTrail version for undo, ActionText restoration on Apartment/Photo undo, showcase install regression test URL fix, and upsert of rich text on repeat delete/undo; no API changes in validation_hints).
+
 ## 8.1.11
 
 ### Changed
