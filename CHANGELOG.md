@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.10
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.10** (companion release for the `:decimal_field` upgrade — `:decimal_field` now maps to a real `decimal(p, s)` column with default `precision: 10, scale: 2` and CLI `{p,s}` override syntax, plus new `latitude` / `longitude` showcase fields demonstrating the override; no API changes in validation_hints).
+
 ## 8.1.9
 
 ### Changed
