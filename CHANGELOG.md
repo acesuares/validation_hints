@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.18
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.18** (companion release: RVM is now optional in the installer — bare `.ruby-version`, no runtime `rvm` gem dependency — and `FormElementShowcasesController#revert` no longer raises `Psych::DisallowedClass` for `ActiveRecord::Type::Time::Value` from date/time `_select` columns; no API changes in validation_hints).
+
 ## 8.1.17
 
 ### Changed
