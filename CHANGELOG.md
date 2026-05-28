@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.11
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.11** (companion release for the installer's `pkg/` gem-discovery fix and the `PARALLEL_WORKERS=2` default with `INLINE_FORMS_TEST_WORKERS` env override; no API changes in validation_hints).
+
 ## 8.1.10
 
 ### Changed
