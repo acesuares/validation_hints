@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.17
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.17** (companion release for the primary-record upsert on `revert`: restoring a `destroy` version while the row still exists no longer raises `RecordNotUnique` on `photos.id`; no API changes in validation_hints).
+
 ## 8.1.16
 
 ### Changed
