@@ -26,6 +26,7 @@ en:
       confirmation: "doesn't match confirmation"
       acceptance: "must be accepted"
       presence: "can't be blank"
+      money: "must be a valid amount"
       length:
         maximum: "must not be longer than %{count} characters"
         minimum: "must not be shorter than %{count} characters"

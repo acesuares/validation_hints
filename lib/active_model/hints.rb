@@ -228,8 +228,15 @@ module ActiveModel
       end
 
       message_key = key
-      message_key = "numericality.must_be_a_number" if key == "numericality"
-      unless VALIDATORS_WITHOUT_MAIN_KEYS.include?(key)
+      if key == "numericality"
+        # +numericality+ is listed in VALIDATORS_WITHOUT_MAIN_KEYS so the
+        # guard below would skip its base message — but a bare
+        # +numericality: true+ carries no option-specific keys, so it would
+        # then emit nothing at all. Always surface the "must be a number"
+        # base hint here; option keys (only_integer, ranges, odd/even, …)
+        # are appended by the options loop below.
+        result << generate_message(attribute, "numericality.must_be_a_number", options)
+      elsif !VALIDATORS_WITHOUT_MAIN_KEYS.include?(key)
         result << generate_message(attribute, message_key, options)
       end
 

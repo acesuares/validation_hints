@@ -34,8 +34,37 @@ class ActiveModelHintsTest < Minitest::Test
 
   def test_numericality_option_hints
     hints = @person.hints[:age]
+    assert_includes hints, "must be a number"
     assert_includes hints, "must be an integer"
     assert_includes hints, "must be greater than 19"
+  end
+
+  def test_bare_numericality_emits_must_be_a_number
+    model = Class.new(ActiveRecord::Base) do
+      self.table_name = "people"
+      validates :age, numericality: true
+      def self.name
+        "BareNumericalityModel"
+      end
+    end
+
+    assert_equal ["must be a number"], model.new.hints[:age]
+  end
+
+  def test_numericality_range_options_keep_their_messages
+    model = Class.new(ActiveRecord::Base) do
+      self.table_name = "people"
+      validates :age, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }
+      def self.name
+        "RangeNumericalityModel"
+      end
+    end
+
+    hints = model.new.hints[:age]
+    assert_equal "must be a number", hints.first,
+      "expected the base must-be-a-number hint to come first"
+    assert_includes hints, "must be greater than or equal to -90"
+    assert_includes hints, "must be less than or equal to 90"
   end
 
   def test_inclusion_hint_uses_list

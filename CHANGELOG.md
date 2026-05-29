@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.20
+
+### Fixed
+
+- **A bare `validates :foo, numericality: true` now emits a `"must be a number"` hint — previously it emitted nothing.** `numericality` is listed in `VALIDATORS_WITHOUT_MAIN_KEYS`, so `Hints#messages_for_validator` computed the `numericality.must_be_a_number` base key but then skipped adding it under the `unless VALIDATORS_WITHOUT_MAIN_KEYS.include?(key)` guard. A bare `numericality: true` carries no option-specific keys (`only_integer`, ranges, `odd`/`even`, …), so the result was an **empty** hint list. The base `"must be a number"` message is now always emitted for `numericality`, with any option-specific messages appended after it. Existing option/range hints are unchanged except that they are now prefixed with `"must be a number"` (e.g. `only_integer` → `["must be a number", "must be an integer"]`; a `greater_than_or_equal_to`/`less_than_or_equal_to` range → `["must be a number", "must be greater than or equal to …", "must be less than or equal to …"]`).
+
+### Added
+
+- **`hints.messages.money` i18n key (`"must be a valid amount"`).** money-rails' `monetize` registers a `MoneyRails::ActiveModel::MoneyValidator` (validator key `money`) on the monetized attribute; without a mapping that produced no usable hint. The new key lets a money-validated attribute surface a meaningful label hint.
+
 ## 8.1.19
 
 ### Changed
