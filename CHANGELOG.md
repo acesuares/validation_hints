@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.19
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.19** (companion release: `InlineFormsController#update` no longer renders a fake `field_show` of an unsaved value when a save fails validation — it re-renders the edit field with errors — and `money_field` keeps malformed input visible; no API changes in validation_hints).
+
 ## 8.1.18
 
 ### Changed
