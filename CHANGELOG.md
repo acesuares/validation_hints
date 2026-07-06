@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.31
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.31** (companion release: per-user locale; no API changes in validation_hints).
+
 ## 8.1.30
 
 ### Changed
