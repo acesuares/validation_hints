@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.37
+
+### Changed
+
+- **RuboCop: zero offenses, todo file eliminated.** All 22 grandfathered offenses fixed via safe autocorrect: array-bracket spacing per omakase style (`[ "lib" ]`) in the Rakefile, both test files and the gemspec; a blank line after the encoding magic comment in `version.rb`; one trailing array comma in `lib/active_model/hints.rb`. Style-only — no behavior change (26 runs, 59 assertions, green). `.rubocop_todo.yml` deleted and `inherit_from` dropped, so RuboCop now runs against the bare omakase config. Version aligned with **inline_forms** / **inline_forms_installer** **8.1.37**.
+
 ## 8.1.36
 
 ### Changed

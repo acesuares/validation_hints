@@ -1,11 +1,8 @@
 # RuboCop with the Rails "omakase" preset (same recipe as Papiamentu and
-# inline_forms). Pre-existing violations are grandfathered in
-# .rubocop_todo.yml; fix them incrementally and delete entries as files get
-# cleaned. Run with: bundle exec rubocop
+# inline_forms). The codebase is fully clean — no .rubocop_todo.yml baseline.
+# Run with: bundle exec rubocop
 inherit_gem:
   rubocop-rails-omakase: rubocop.yml
-
-inherit_from: .rubocop_todo.yml
 
 AllCops:
   TargetRubyVersion: 3.3

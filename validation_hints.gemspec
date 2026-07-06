@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "validation_hints"
   s.version     = ValidationHints::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Ace Suares"]
-  s.email       = ["ace@suares.com"]
+  s.authors     = [ "Ace Suares" ]
+  s.email       = [ "ace@suares.com" ]
   s.homepage    = "https://github.com/acesuares/validation_hints"
   s.summary     = "Proactive validation hints derived from model validators"
   s.description = "Shows what a field expects before validation fails — complementary to ActiveModel errors."
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
     s.test_files = Dir.glob("{test,spec}/**/*", base: __dir__)
   end
 
-  s.require_paths = ["lib"]
+  s.require_paths = [ "lib" ]
 
   s.add_dependency "activerecord", ">= 8.1", "< 8.2"
 

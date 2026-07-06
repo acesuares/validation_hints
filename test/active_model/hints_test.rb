@@ -14,7 +14,7 @@ class ActiveModelHintsTest < Minitest::Test
 
   def test_full_messages_for_includes_human_attribute_name
     messages = @person.hints.full_messages_for(:name)
-    assert_equal ["Name can't be blank"], messages
+    assert_equal [ "Name can't be blank" ], messages
   end
 
   def test_has_validations_for
@@ -48,7 +48,7 @@ class ActiveModelHintsTest < Minitest::Test
       end
     end
 
-    assert_equal ["must be a number"], model.new.hints[:age]
+    assert_equal [ "must be a number" ], model.new.hints[:age]
   end
 
   def test_numericality_range_options_keep_their_messages

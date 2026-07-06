@@ -18,6 +18,6 @@ task "test:bundle" do
   require "bundler/setup"
 end
 
-Rake::Task[:test].enhance(["test:bundle"])
+Rake::Task[:test].enhance([ "test:bundle" ])
 
 task default: :test

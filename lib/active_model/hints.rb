@@ -275,7 +275,7 @@ module ActiveModel
 
       if validator_key == "length"
         [
-          generate_message(attribute, "#{validator_key}.within", minimum: minimum, maximum: maximum),
+          generate_message(attribute, "#{validator_key}.within", minimum: minimum, maximum: maximum)
         ]
       else
         [
