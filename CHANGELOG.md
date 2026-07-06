@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.29
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.29** (companion release: per-user preset themes; no API changes in validation_hints).
+
 ## 8.1.28
 
 ### Changed
