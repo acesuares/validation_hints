@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.25
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.25** (companion release: native date/time/month inputs replace jQuery UI pickers; no API changes in validation_hints).
+
 ## 8.1.24
 
 ### Changed
