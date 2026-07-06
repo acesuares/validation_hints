@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.34
+
+### Added
+
+- **Forgejo Actions CI** (`.forgejo/workflows/ci.yml`: tests, RuboCop, bundler-audit on the dev02 runner) and **RuboCop** (Rails omakase + `.rubocop_todo.yml` grandfathering the 22 pre-existing offenses). No GitHub workflows — pushing to GitHub triggers nothing. Version aligned with **inline_forms** / **inline_forms_installer** **8.1.34**.
+
 ## 8.1.33
 
 ### Changed

@@ -1,0 +1,40 @@
+# CI for Forgejo Actions (runner on dev02; same pattern as inline_forms and
+# Papiamentu: runner label `docker`, shared image, vendor/bundle cache).
+# No GitHub workflows exist — pushing to GitHub triggers nothing.
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: docker
+    container:
+      image: papiamentu-ci:ruby-4.0.4-node20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache gems
+        uses: actions/cache@v4
+        with:
+          path: vendor/bundle
+          key: gems-validation_hints-${{ hashFiles('Gemfile', 'validation_hints.gemspec') }}
+          restore-keys: gems-validation_hints-
+
+      - name: Install gems
+        run: |
+          bundle config set --local path vendor/bundle
+          bundle install --jobs 4
+
+      - name: Tests
+        run: bundle exec rake test
+
+      - name: RuboCop
+        run: bundle exec rubocop
+
+      - name: bundler-audit
+        run: |
+          gem install bundler-audit --no-document
+          bundle-audit check --update

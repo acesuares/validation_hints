@@ -36,4 +36,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "minitest", "~> 5.0"
   s.add_development_dependency "rake", "~> 13.0"
   s.add_development_dependency "bundler", ">= 2.0"
+  # Rails omakase style; offenses grandfathered in .rubocop_todo.yml.
+  s.add_development_dependency "rubocop-rails-omakase"
 end
