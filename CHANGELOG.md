@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.26
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.26** (companion release: jQuery UI fully removed; no API changes in validation_hints).
+
 ## 8.1.25
 
 ### Changed
