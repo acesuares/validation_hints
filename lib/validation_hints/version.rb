@@ -1,4 +1,4 @@
 # -*- encoding : utf-8 -*-
 module ValidationHints
-  VERSION = "8.1.22"
+  VERSION = "8.1.23"
 end
