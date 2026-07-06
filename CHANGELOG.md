@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.35
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.35** (companion release: seed images shipped with the installer; no API changes in validation_hints).
+
 ## 8.1.34
 
 ### Added
