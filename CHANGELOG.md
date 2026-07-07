@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.38
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.38** (companion release: inline_forms RuboCop todo shrunk 590 → 196, heredoc-free files all clean; no API changes in validation_hints).
+
 ## 8.1.37
 
 ### Changed
