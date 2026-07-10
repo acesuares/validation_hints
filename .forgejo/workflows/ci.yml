@@ -3,9 +3,11 @@
 # No GitHub workflows exist — pushing to GitHub triggers nothing.
 name: CI
 
+# Push triggers on EVERY branch (inline_forms stuff/prompt/workflow.md:
+# "every commit runs through CI") — feature branches were silently skipping
+# CI when this was `branches: [master]`.
 on:
   push:
-    branches: [master]
   pull_request:
 
 jobs:
