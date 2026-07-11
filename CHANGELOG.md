@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.41
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** **8.1.41** (companion release: `inline_forms_addto` hardening — smarter/explicit attribute-list row placement, robust model rewriting, value-bearing placeholders, collision-free migration timestamps, and an example-app end-to-end test; no API changes in validation_hints).
+
 ## 8.1.40
 
 ### Changed
