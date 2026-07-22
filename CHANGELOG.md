@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.43
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.43** (companion release: merges the schema-GUI pipeline line into master alongside the picker fix; no API changes in validation_hints).
+
 ## 8.1.42
 
 ### Changed
