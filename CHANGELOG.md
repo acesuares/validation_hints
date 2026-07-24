@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.44
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.44** (companion release: `simple_file_field` download-link Turbo bypass and route-segment fix; no API changes in validation_hints).
+
 ## 8.1.43
 
 ### Changed
