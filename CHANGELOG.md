@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.47
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.47** (companion release: inline-edit validation error display; no API changes in validation_hints).
+
 ## 8.1.46
 
 ### Changed
