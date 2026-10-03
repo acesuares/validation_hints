@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.49
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.49** (companion release: attribute-level authorization on inline field edit/update; no API changes in validation_hints).
+
 ## 8.1.48
 
 ### Changed
