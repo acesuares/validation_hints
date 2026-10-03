@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.50
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.50** (companion release: declared file slots with a file trash; no API changes in validation_hints).
+
 ## 8.1.49
 
 ### Changed
