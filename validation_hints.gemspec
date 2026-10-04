@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "lib/validation_hints/version"
+# Build-time: package world-readable file modes (see ValidationHints::GemBuild).
+require_relative "lib/validation_hints/gem_build"
 
 Gem::Specification.new do |s|
   s.name        = "validation_hints"

@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.55
+
+### Fixed
+
+- **The published gem is world-readable again.** RubyGems packages each file with its on-disk mode and `gem install` restores it; the release checkout is group-only, so 8.1.53 shipped every file as `0660`, unreadable for anyone but the installing user and group. New `ValidationHints::GemBuild` (loaded by the gemspec) packages files as `0644`, or `0755` if executable. Tested in `test/gem_build_test.rb`. Lockstep with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.55**.
+
 ## 8.1.54
 
 ### Changed
