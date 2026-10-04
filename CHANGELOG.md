@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.52
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.52** (companion release: "+ field" link removed from the engine top bar; no API changes in validation_hints).
+
 ## 8.1.51
 
 ### Changed
