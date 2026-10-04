@@ -47,7 +47,7 @@ class GemBuildTest < Minitest::Test
           s.name = "modes_probe"
           s.version = "0.0.1"
           s.summary = "probe"
-          s.authors = ["probe"]
+          s.authors = [ "probe" ]
           s.files = %w[plain.rb tool]
         end
 
