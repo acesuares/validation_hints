@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.54
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.54** (companion release: Devise password views no longer call the removed `devise_error_messages!`; no API changes in validation_hints).
+
 ## 8.1.53
 
 ### Changed
