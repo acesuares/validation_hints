@@ -218,6 +218,11 @@ module ActiveModel
         message_key = "#{key}.#{options[:message]}"
         generate_options = options.dup
         generate_options.delete(:message)
+        # Like Rails' errors.messages.required: `message: :required` (every
+        # belongs_to) also finds hints.messages.required when no
+        # "presence.required" key exists. `presence` itself stays a plain
+        # string, so overriding hints.messages.presence keeps working.
+        generate_options[:fallback_type] = options[:message]
         result << generate_message(attribute, message_key, generate_options)
         return result
       end
@@ -309,6 +314,11 @@ module ActiveModel
       defaults << :"activemodel.hints.messages.#{type}"
       defaults << :"hints.attributes.#{attribute_name}.#{type}"
       defaults << :"hints.messages.#{type}"
+      if (fallback = options[:fallback_type])
+        defaults << :"#{@base.class.i18n_scope}.hints.messages.#{fallback}" if @base.class.respond_to?(:i18n_scope)
+        defaults << :"activemodel.hints.messages.#{fallback}"
+        defaults << :"hints.messages.#{fallback}"
+      end
       defaults.compact.flatten
     end
 

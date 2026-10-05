@@ -5,12 +5,14 @@ require "active_model/hints"
 
 module ValidationHints
   LOCALE_PATH = File.expand_path("validation_hints/locale/en.yml", __dir__)
+  # Every shipped locale (en, nl). A host's own files load later and win.
+  LOCALE_PATHS = Dir[File.expand_path("validation_hints/locale/*.yml", __dir__)].sort.freeze
 
   def self.load_i18n!
     return if @i18n_loaded
 
     require "i18n"
-    I18n.load_path << LOCALE_PATH unless I18n.load_path.include?(LOCALE_PATH)
+    LOCALE_PATHS.each { |path| I18n.load_path << path unless I18n.load_path.include?(path) }
     @i18n_loaded = true
   end
 end

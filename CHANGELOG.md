@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.57
+
+### Added
+
+- **Dutch locale.** `lib/validation_hints/locale/nl.yml` has the same keys as `en.yml`, with the translations from StProject's `config/locales/validation_hints.nl.yml`. Every shipped locale file is loaded (`ValidationHints::LOCALE_PATHS`; `LOCALE_PATH` still names the en file), and a host's own locale files still win.
+
+### Fixed
+
+- **`message: :required` hints were "Translation missing", even in en.** Every `belongs_to` (Rails adds `validates_presence_of …, message: :required`) is hinted as `presence.required`. The en file had `presence` only as a plain string, so that key could never exist. Like Rails' `errors.messages.required`, the lookup now falls back to `hints.messages.required` (and the `activerecord` / `activemodel` scopes) after the `presence.required` keys. en gets "must be chosen", nl "moet gekozen zijn". `presence` itself stays a plain string, so a host's `hints.messages.presence` override keeps working, and a host's `presence.required` key (StProject's nl file) still wins.
+
+### Tests
+
+- `test/active_model/i18n_test.rb`:
+  - a `message: :required` presence hint resolves in en, and a `presence.required` key wins over the fallback;
+  - nl hints and full messages render;
+  - every shipped locale has exactly the keys of en.
+
+### Changed
+
+- **Version numbering:** aligned with **inline_forms** / **inline_forms_installer** / **inline_forms_schema_edit** **8.1.57**. The companion release has security fixes and translations in inline_forms.
+
 ## 8.1.56
 
 ### Changed

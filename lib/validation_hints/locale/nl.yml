@@ -1,0 +1,50 @@
+---
+# Dutch, key for key the same as en.yml. Translations from StProject's
+# config/locales/validation_hints.nl.yml (which keeps working next to this
+# file; a host's own locale files load later and win).
+nl:
+  activemodel:
+    hints:
+      format: "%{attribute} %{message}"
+
+  activerecord:
+    hints:
+      format: "%{attribute} %{message}"
+
+  hints:
+    format: "%{attribute} %{message}"
+
+    messages:
+      invalid: "is ongeldig"
+      blank: "moet ingevuld zijn"
+      empty: "moet ingevuld zijn"
+      inclusion:
+        in: "moet een van %{count} zijn"
+      exclusion:
+        in: "mag niet een van %{count} zijn"
+      format: "moet het vereiste formaat hebben"
+      email_format: "moet een geldig e-mailadres zijn"
+      associated: "is ongeldig"
+      uniqueness: "moet uniek zijn"
+      confirmation: "moet overeenkomen met de bevestiging"
+      acceptance: "moet geaccepteerd worden"
+      presence: "moet ingevuld zijn"
+      # `message: :required` (belongs_to): looked up as presence.required,
+      # then as required (see ActiveModel::Hints#i18n_defaults).
+      required: "moet gekozen zijn"
+      money: "moet een geldig bedrag zijn"
+      length:
+        maximum: "mag niet langer zijn dan %{count} tekens"
+        minimum: "mag niet korter zijn dan %{count} tekens"
+        is: "moet precies %{count} tekens lang zijn"
+        within: "moet tussen %{minimum} en %{maximum} tekens lang zijn"
+      numericality:
+        must_be_a_number: "moet een getal zijn"
+        only_integer: "moet een geheel getal zijn"
+        greater_than: "moet groter zijn dan %{count}"
+        greater_than_or_equal_to: "moet groter dan of gelijk aan %{count} zijn"
+        equal_to: "moet gelijk zijn aan %{count}"
+        less_than: "moet kleiner zijn dan %{count}"
+        less_than_or_equal_to: "moet kleiner dan of gelijk aan %{count} zijn"
+        odd: "moet oneven zijn"
+        even: "moet even zijn"
