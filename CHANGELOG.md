@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.65
+
+### Changed
+
+- Version bump to stay in lockstep with `inline_forms` / `inline_forms_installer` / `inline_forms_schema_edit` 8.1.65 (dropdowns honour a `reorder` and joins in `inline_forms_list`, `pdf_link` needs no model method and works under a sub-path). No changes to this gem's own code.
+
 ## 8.1.64
 
 ### Changed
