@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.71
+
+### Changed
+
+- Version bump to stay in lockstep with `inline_forms` / `inline_forms_installer` / `inline_forms_schema_edit` 8.1.71. No changes to this gem's own code.
+
 ## 8.1.70
 
 ### Changed
