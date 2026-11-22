@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.76
+
+### Changed
+
+- The gem packages only `lib` and the documents. Tests, `.forgejo/`, `stuff/`, RuboCop and Ruby version files, `Gemfile` and `Rakefile` are left out.
+- Version bump to stay in lockstep with `inline_forms` / `inline_forms_installer` / `inline_forms_schema_edit` 8.1.76.
+
 ## 8.1.75
 
 ### Changed

@@ -16,16 +16,10 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.required_ruby_version = ">= 4.0.0"
 
-  if File.directory?(File.join(__dir__, ".git"))
-    s.files      = `git ls-files`.split("\n")
-    s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
-  else
-    s.files = Dir.chdir(__dir__) do
-      Dir.glob("{lib,test}/**/*", File::FNM_DOTMATCH).reject do |f|
-        f.end_with?(".gem") || f.start_with?("stuff/")
-      end + %w[README.md LICENSE.txt CHANGELOG.md Gemfile Rakefile validation_hints.gemspec]
-    end
-    s.test_files = Dir.glob("{test,spec}/**/*", base: __dir__)
+  # What an installed gem needs; not the tests, CI and RuboCop files or stuff/.
+  s.files = Dir.chdir(__dir__) do
+    Dir.glob("lib/**/*").select { |f| File.file?(f) } +
+      %w[README.md LICENSE.txt CHANGELOG.md validation_hints.gemspec]
   end
 
   s.require_paths = [ "lib" ]
