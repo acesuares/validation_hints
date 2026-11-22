@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.68
+
+### Changed
+
+- Ruby 4.0.10 instead of 4.0.4 (Ruby security fixes) in `.ruby-version` and CI; `required_ruby_version` is unchanged.
+- CI runs without Node: the official `ruby:4.0.10` image and plain git instead of `actions/checkout` and `actions/cache`.
+- Version bump to stay in lockstep with `inline_forms` / `inline_forms_installer` / `inline_forms_schema_edit` 8.1.68. No changes to this gem's own code.
+
 ## 8.1.67
 
 ### Changed
