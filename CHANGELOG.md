@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.1.77
+
+### Changed
+
+- Version bump to stay in lockstep with `inline_forms` / `inline_forms_installer` / `inline_forms_schema_edit` 8.1.77.
+
 ## 8.1.76
 
 ### Changed
